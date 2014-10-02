@@ -17,17 +17,17 @@ didRangeBeacons:(NSArray *)beacons
 
 @interface BeaconKit : NSObject
 @property (nonatomic, assign) id<BeaconKitDelegate> delegate;
-@property (nonatomic, strong) NSString *name;
+@property (nonatomic, strong) NSMutableDictionary *trackers;
 + (id)sharedInstance;
 
 /* Operation */
 - (void)startMonitoring;
 - (void)stopMonitoring;
 - (void)resumeMonitoring;
-- (void)startMonitoringForBeacon:(CLBeacon *)beacon;
 
 /* Contexts */
-- (NSString *)name:(CLBeacon *)beacon;
+- (NSString *)nameForBeacon:(CLBeacon *)beacon;
+- (NSString *)nameForRegion:(CLBeaconRegion *)region;
 - (NSString *)proximity:(CLBeacon *)beacon;
 - (UIColor *)color:(CLBeacon *)beacon;
 @end

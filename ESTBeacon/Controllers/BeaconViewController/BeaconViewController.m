@@ -92,9 +92,9 @@
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     BeaconTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:[self cellReuseIdentifier]
-                                                            forIndexPath:indexPath];
+                                                                forIndexPath:indexPath];
     CLBeacon *beacon = [_beacons objectAtIndex:indexPath.row];
-    cell.textLabel.text = [[BeaconKit sharedInstance] name:beacon];
+    cell.textLabel.text = [[BeaconKit sharedInstance] nameForBeacon:beacon];
     cell.detailTextLabel.text = [NSString stringWithFormat:NSLocalizedString(@"Distance: %@(%.2f)", nil), [[BeaconKit sharedInstance] proximity:beacon], beacon.accuracy];
     
     UIColor *beaconColor = [[BeaconKit sharedInstance] color:beacon];
@@ -102,7 +102,9 @@
     cell.textLabel.backgroundColor = beaconColor;
     cell.detailTextLabel.backgroundColor = beaconColor;
     
-    UIColor *imageColor = ([[[BeaconKit sharedInstance] name:beacon] isEqualToString:[[BeaconKit sharedInstance] name]]) ? [UIColor redColor] : [UIColor whiteColor];
+    NSDictionary *trackers = [[BeaconKit sharedInstance] trackers];
+    NSString *key = [NSString stringWithFormat:@"%@-%@", beacon.major, beacon.minor];
+    UIColor *imageColor = (trackers[key]) ? [UIColor redColor] : [UIColor whiteColor];
     cell.imageView.image = [[UIImage imageNamed:@"beacon_linear"] tintColor:imageColor];
     
     return cell;
@@ -111,9 +113,6 @@
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     [tableView deselectRowAtIndexPath:indexPath animated:NO];
-    
-    CLBeacon *beacon = [_beacons objectAtIndex:indexPath.row];
-    [[BeaconKit sharedInstance] startMonitoringForBeacon:beacon];
 }
 
 #pragma mark BeaconKit delegate
