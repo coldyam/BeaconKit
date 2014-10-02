@@ -13,7 +13,13 @@
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
-    // Override point for customization after application launch.
+#if __IPHONE_OS_VERSION_MAX_ALLOWED >= 80000
+    if ([UIApplication instancesRespondToSelector:@selector(registerUserNotificationSettings:)])
+    {
+        [[UIApplication sharedApplication] registerUserNotificationSettings:[UIUserNotificationSettings settingsForTypes:UIUserNotificationTypeAlert | UIUserNotificationTypeBadge | UIUserNotificationTypeSound categories:nil]];
+    }
+#endif
+    
     if([launchOptions objectForKey:@"UIApplicationLaunchOptionsLocationKey"])
     {
         [[BeaconKit sharedInstance] resumeMonitoring];
