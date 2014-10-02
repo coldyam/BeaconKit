@@ -24,6 +24,7 @@
     {
         [[BeaconKit sharedInstance] resumeMonitoring];
     }
+    
     BeaconViewController *vc = [[BeaconViewController alloc] initWithNibName:@"BeaconViewController" bundle:nil];
     UINavigationController *nc = [[UINavigationController alloc] initWithRootViewController:vc];
     _window.rootViewController = nc;
